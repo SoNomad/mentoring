@@ -1,5 +1,13 @@
+<div class="content">
+  <button (click)="openDialog()">Добавить пользователя</button>
+</div>
 <div class="users">
-  @for (user of users$ | async; track $index) {
-  <app-user-card [user]="user"></app-user-card>
+  @if(!users.length) {
+  <h2>Пользователи отсутствуют</h2>
+  } @for (user of users ; track $index) {
+  <app-user-card
+    [user]="user"
+    (deleteUserId)="deleteUserHandler($event)"
+  ></app-user-card>
   }
 </div>

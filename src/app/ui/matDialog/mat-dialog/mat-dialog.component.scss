@@ -1,18 +1,28 @@
-.users {
+form {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  flex-wrap: wrap;
-  min-height: 100vh;
-  background: #232427;
+}
+h2 {
+  color: black;
+  text-align: center;
+  padding-top: 15px;
 }
 
-.content button {
+.example-form {
+  min-width: 150px;
+  margin: 15px auto;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+button {
   position: relative;
   display: inline-block;
-  padding: 8px 20px;
   border: none;
-
+  padding: 8px 20px;
   background: rgb(117, 73, 219);
   border-radius: 5px;
   text-decoration: none;
@@ -22,7 +32,7 @@
   transition: 0.5s;
   margin-bottom: 20px;
 }
-.content button:hover {
+button:hover {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
   background: #fff;
   color: #000;
