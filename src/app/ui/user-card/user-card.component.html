@@ -3,7 +3,9 @@
     <div class="box">
       <div class="content">
         <h2>{{ user.id }}</h2>
-        <h3>{{ user.username }}</h3>
+        <h3>
+          {{ user.username }}
+        </h3>
 
         <p class="details">
           <li>email: {{ user.email }}</li>
@@ -12,7 +14,15 @@
           <li>street: {{ user.address?.street }}</li>
         </p>
 
-        <button (click)="deleteUserHandler(user.id)">Удалить</button>
+        <div class="action-btns">
+          <button mat-fab (click)="deleteUserHandler(user.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+
+          <button mat-fab (click)="editUserHandler(user)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
       </div>
     </div>
   </div>

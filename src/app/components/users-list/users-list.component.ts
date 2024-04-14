@@ -4,8 +4,9 @@ import { User } from '../../../types/User';
 import { UserCardComponent } from '../../ui/user-card/user-card.component';
 import { UsersService } from '../../services/users.service';
 import { MatDialog } from '@angular/material/dialog';
-import { MatDialogComponent } from '../../ui/matDialog/mat-dialog/mat-dialog.component';
+import { MatDialogComponent } from '../../ui/matDialog/mat-dialog.component';
 import { MatButtonModule } from '@angular/material/button';
+import { idGenerator } from '../../utils/idGenerator';
 
 @Component({
   selector: 'app-users-list',
@@ -30,19 +31,23 @@ export class UsersListComponent {
     this.users = this.usersService.users;
   }
 
-  openDialog() {
+  public openDialog(user?: User) {
     let dialogConfig = {
       height: '550px',
       width: '450px',
-      data: {},
+      data: user,
     };
     const dialogRef = this.dialog.open(MatDialogComponent, dialogConfig);
 
-    dialogRef.afterClosed().subscribe((result: User) => {
-      let id = this.users.length ? this.users[this.users.length - 1].id + 1 : 1;
-
-      this.usersService.addUser({ ...result, id });
-      this.users = this.usersService.users;
+    dialogRef.afterClosed().subscribe((data: User) => {
+      if (data && data.id) {
+        this.usersService.editUser(data);
+        this.users = this.usersService.users;
+      } else {
+        let id = idGenerator(this.users);
+        this.usersService.addUser({ ...data, id });
+        this.users = this.usersService.users;
+      }
     });
   }
 }

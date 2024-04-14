@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
-import { User } from '../../../../types/User';
+import { User } from '../../../types/User';
 
 @Component({
   selector: 'app-mat-dialog',
@@ -17,27 +17,27 @@ import { User } from '../../../../types/User';
   styleUrl: './mat-dialog.component.scss',
 })
 export class MatDialogComponent {
-  public userFormGroup = new FormGroup({
-    name: new FormControl(''),
-    username: new FormControl(''),
-    email: new FormControl(''),
-    address: new FormGroup({
-      city: new FormControl(''),
-      street: new FormControl(''),
-    }),
-  });
-
   constructor(
     public dialogRef: MatDialogRef<MatDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: User
   ) {}
 
-  onSubmit(): void {
-    console.log(this.userFormGroup.value);
+  public userFormGroup = new FormGroup({
+    id: new FormControl(this.data?.id ?? null),
+    name: new FormControl(this.data?.name ?? ''),
+    username: new FormControl(this.data?.username ?? ''),
+    email: new FormControl(this.data?.email ?? ''),
+    address: new FormGroup({
+      city: new FormControl(this.data?.address?.city ?? ''),
+      street: new FormControl(this.data?.address?.street ?? ''),
+    }),
+  });
 
+  public readonly isEditable: boolean = !!this.data;
+
+  onSubmit(): void {
     this.dialogRef.close(this.userFormGroup.value);
   }
-
   onNoClick(): void {
     this.dialogRef.close();
   }

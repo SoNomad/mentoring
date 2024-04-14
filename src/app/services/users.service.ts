@@ -11,15 +11,27 @@ export class UsersService {
   public users: User[] = [];
 
   constructor() {
-    this.api.getUsers().subscribe((users) => {
-      this.users.push(...users);
-    });
+    this.users = JSON.parse(localStorage.getItem('users') || '[]');
+
+    if (!this.users.length) {
+      this.api.getUsers().subscribe((users) => {
+        this.users.push(...users);
+        localStorage.setItem('users', JSON.stringify(this.users));
+      });
+    }
   }
 
   public deleteUser(id: number) {
     this.users = this.users.filter((user) => user.id !== id);
+    localStorage.setItem('users', JSON.stringify(this.users));
   }
   public addUser(user: User) {
     this.users.push(user);
+    localStorage.setItem('users', JSON.stringify(this.users));
+  }
+
+  public editUser(user: User) {
+    this.users = this.users.map((u) => (u.id === user.id ? user : u));
+    localStorage.setItem('users', JSON.stringify(this.users));
   }
 }

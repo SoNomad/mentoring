@@ -8,6 +8,7 @@
   <app-user-card
     [user]="user"
     (deleteUserId)="deleteUserHandler($event)"
+    (editableUser)="openDialog($event)"
   ></app-user-card>
   }
 </div>

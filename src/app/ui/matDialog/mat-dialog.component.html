@@ -1,4 +1,4 @@
-<h2>Добавить юзера</h2>
+<h2>{{ isEditable ? "Редактировать" : "Добавить" }}</h2>
 <form
   [formGroup]="userFormGroup"
   (ngOnSubmit)="(onSubmit)"
@@ -34,5 +34,7 @@
     <input matInput formControlName="street" placeholder="Enter street" />
   </mat-form-field>
 
-  <button type="submit" (click)="onSubmit()">Добавить</button>
+  <button type="button" (click)="onSubmit()">
+    {{ isEditable ? "Сохранить" : "Добавить" }}
+  </button>
 </form>
