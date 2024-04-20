@@ -5,10 +5,6 @@
   @if(!users.length) {
   <h2>Пользователи отсутствуют</h2>
   } @for (user of users ; track $index) {
-  <app-user-card
-    [user]="user"
-    (deleteUserId)="deleteUserHandler($event)"
-    (editableUser)="openDialog($event)"
-  ></app-user-card>
+  <app-user-card [user]="user"></app-user-card>
   }
 </div>

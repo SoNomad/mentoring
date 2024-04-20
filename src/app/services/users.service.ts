@@ -8,6 +8,8 @@ import { User } from '../../types/User';
 })
 export class UsersService {
   private readonly api = inject(UsersApiService);
+
+  public readonly users$ = new BehaviorSubject<User[]>([]);
   public users: User[] = [];
 
   constructor() {
