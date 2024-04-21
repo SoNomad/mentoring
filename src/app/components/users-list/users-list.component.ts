@@ -1,12 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { User } from '../../../types/User';
+import { User } from '../../types/User';
 import { UserCardComponent } from '../../ui/user-card/user-card.component';
 import { UsersService } from '../../services/users.service';
 import { MatDialog } from '@angular/material/dialog';
-import { MatDialogComponent } from '../../ui/matDialog/mat-dialog.component';
+import { CreateEditUserModalComponent } from '../../ui/user-modal/user-modal.component';
 import { MatButtonModule } from '@angular/material/button';
-import { idGenerator } from '../../utils/idGenerator';
+import { idGenerator } from '../../utils/id-generator.util';
+import { dialogConfigure } from '../../utils/dialog-congif.util';
 
 @Component({
   selector: 'app-users-list',
@@ -20,33 +21,29 @@ export class UsersListComponent {
   private readonly usersService = inject(UsersService);
   public dialog = inject(MatDialog);
 
-  public users: User[] = [];
+  public users: User[] = this.usersService.users; //убрал отдельную переменную
 
-  constructor() {
-    this.users = this.usersService.users;
-  }
-
-  public deleteUserHandler(id: number) {
+  public onDeleteUserClick(id: number) {
     this.usersService.deleteUser(id);
     this.users = this.usersService.users;
   }
 
   public openDialog(user?: User) {
-    let dialogConfig = {
-      height: '550px',
-      width: '450px',
-      data: user,
-    };
-    const dialogRef = this.dialog.open(MatDialogComponent, dialogConfig);
+    const dialogRef = this.dialog.open(
+      CreateEditUserModalComponent, //исправил название
+      dialogConfigure(user) // создал отдельный утил для конфига
+    );
 
+    //убрал isEditable переменную
+
+    //Перенес idGenerator в сервис
     dialogRef.afterClosed().subscribe((data: User) => {
       if (data && data.id) {
         this.usersService.editUser(data);
-        this.users = this.usersService.users;
+      } else if (data) {
+        this.usersService.addUser({ ...data });
       } else {
-        let id = idGenerator(this.users);
-        this.usersService.addUser({ ...data, id });
-        this.users = this.usersService.users;
+        return;
       }
     });
   }

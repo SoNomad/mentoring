@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { UsersApiService } from './users.api.service';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { User } from '../../types/User';
+import { User } from '../types/User';
+import { idGenerator } from '../utils/id-generator.util';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,10 @@ export class UsersService {
   public users: User[] = [];
 
   constructor() {
+    this.getUsers();
+  }
+
+  public getUsers(): void {
     this.users = JSON.parse(localStorage.getItem('users') || '[]');
 
     if (!this.users.length) {
@@ -26,6 +31,7 @@ export class UsersService {
     localStorage.setItem('users', JSON.stringify(this.users));
   }
   public addUser(user: User) {
+    user.id = idGenerator(this.users);
     this.users.push(user);
     localStorage.setItem('users', JSON.stringify(this.users));
   }
