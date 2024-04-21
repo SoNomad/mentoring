@@ -1,37 +1,46 @@
 import { Injectable, inject } from '@angular/core';
 import { UsersApiService } from './users.api.service';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { User } from '../../types/User';
+import { BehaviorSubject, Observable, map } from 'rxjs';
+import { User } from '../types/User';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService {
   private readonly api = inject(UsersApiService);
-  public users: User[] = [];
+
+  private readonly usersSubject$ = new BehaviorSubject<User[]>([]);
+  public readonly users$ = this.usersSubject$.asObservable();
 
   constructor() {
-    this.users = JSON.parse(localStorage.getItem('users') || '[]');
+    this.getUsers();
+  }
 
-    if (!this.users.length) {
-      this.api.getUsers().subscribe((users) => {
-        this.users.push(...users);
-        localStorage.setItem('users', JSON.stringify(this.users));
-      });
-    }
+  public getUsers(): void {
+    this.api.getUsers().subscribe((users) => {
+      this.usersSubject$.next(users);
+    });
   }
 
   public deleteUser(id: number) {
-    this.users = this.users.filter((user) => user.id !== id);
-    localStorage.setItem('users', JSON.stringify(this.users));
-  }
-  public addUser(user: User) {
-    this.users.push(user);
-    localStorage.setItem('users', JSON.stringify(this.users));
+    this.api.deleteUser(id).subscribe(() => {
+      this.usersSubject$.next(
+        this.usersSubject$.value.filter((u) => u.id !== id)
+      );
+    });
   }
 
-  public editUser(user: User) {
-    this.users = this.users.map((u) => (u.id === user.id ? user : u));
-    localStorage.setItem('users', JSON.stringify(this.users));
+  public addUser(user: User) {
+    this.api.addUser(user).subscribe((user) => {
+      this.usersSubject$.next([...this.usersSubject$.getValue(), user]);
+    });
+  }
+
+  public editUser(editedUser: User) {
+    this.api.editUser(editedUser).subscribe((res) => {
+      this.usersSubject$.next(
+        this.usersSubject$.value.map((u) => (u.id === res.id ? res : u))
+      );
+    });
   }
 }

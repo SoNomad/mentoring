@@ -2,12 +2,10 @@
   <button (click)="openDialog()">Добавить пользователя</button>
 </div>
 <div class="users">
-  @if(!users.length) {
-  <h2>Пользователи отсутствуют</h2>
-  } @for (user of users ; track $index) {
+  @for (user of users$ | async ; track $index) {
   <app-user-card
     [user]="user"
-    (deleteUserId)="deleteUserHandler($event)"
+    (deleteUserId)="onDeleteUserClick($event)"
     (editableUser)="openDialog($event)"
   ></app-user-card>
   }

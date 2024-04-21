@@ -1,4 +1,4 @@
-<h2>{{ isEditable ? "Редактировать" : "Добавить" }}</h2>
+<h2>{{ data ? "Редактировать" : "Добавить" }}</h2>
 <form
   [formGroup]="userFormGroup"
   (ngOnSubmit)="(onSubmit)"
@@ -35,6 +35,6 @@
   </mat-form-field>
 
   <button type="button" (click)="onSubmit()">
-    {{ isEditable ? "Сохранить" : "Добавить" }}
+    {{ data ? "Сохранить" : "Добавить" }}
   </button>
 </form>

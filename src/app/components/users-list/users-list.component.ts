@@ -1,12 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { User } from '../../../types/User';
+import { User } from '../../types/User';
 import { UserCardComponent } from '../../ui/user-card/user-card.component';
 import { UsersService } from '../../services/users.service';
 import { MatDialog } from '@angular/material/dialog';
-import { MatDialogComponent } from '../../ui/matDialog/mat-dialog.component';
+import { CreateEditUserModalComponent } from '../../ui/userModal/user-modal.component';
 import { MatButtonModule } from '@angular/material/button';
-import { idGenerator } from '../../utils/idGenerator';
+import { idGenerator } from '../../utils/id-generator.util';
+import { dialogConfigure } from '../../utils/dialog-congif.util';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-users-list',
@@ -18,35 +20,27 @@ import { idGenerator } from '../../utils/idGenerator';
 })
 export class UsersListComponent {
   private readonly usersService = inject(UsersService);
-  public dialog = inject(MatDialog);
+  private readonly dialog = inject(MatDialog);
+  public readonly users$: Observable<User[]> = this.usersService.users$;
 
-  public users: User[] = [];
-
-  constructor() {
-    this.users = this.usersService.users;
-  }
-
-  public deleteUserHandler(id: number) {
+  public onDeleteUserClick(id: number) {
     this.usersService.deleteUser(id);
-    this.users = this.usersService.users;
   }
 
   public openDialog(user?: User) {
-    let dialogConfig = {
-      height: '550px',
-      width: '450px',
-      data: user,
-    };
-    const dialogRef = this.dialog.open(MatDialogComponent, dialogConfig);
+    const dialogRef = this.dialog.open(
+      CreateEditUserModalComponent,
+      dialogConfigure(user)
+    );
 
     dialogRef.afterClosed().subscribe((data: User) => {
       if (data && data.id) {
         this.usersService.editUser(data);
-        this.users = this.usersService.users;
-      } else {
-        let id = idGenerator(this.users);
+      } else if (data) {
+        let id = idGenerator(this.users$);
         this.usersService.addUser({ ...data, id });
-        this.users = this.usersService.users;
+      } else {
+        return;
       }
     });
   }

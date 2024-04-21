@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { User } from '../../../types/User';
+import { User } from '../../types/User';
 
 @Component({
   selector: 'app-user-card',
@@ -12,13 +12,13 @@ import { User } from '../../../types/User';
 })
 export class UserCardComponent {
   @Input() public user!: User;
-  @Output() public deleteUserId: EventEmitter<number> = new EventEmitter();
-  @Output() public editableUser: EventEmitter<User> = new EventEmitter();
+  @Output() public deleteUserId = new EventEmitter<number>();
+  @Output() public editableUser = new EventEmitter<User>();
 
-  public deleteUserHandler(id: number) {
+  public onDeleteUserClick(id: number) {
     this.deleteUserId.emit(id);
   }
-  editUserHandler(user: User) {
+  public onEditUserClick(user: User) {
     this.editableUser.emit(user);
   }
 }

@@ -15,11 +15,11 @@
         </p>
 
         <div class="action-btns">
-          <button mat-fab (click)="deleteUserHandler(user.id)">
+          <button mat-fab (click)="onDeleteUserClick(user.id)">
             <mat-icon>delete</mat-icon>
           </button>
 
-          <button mat-fab (click)="editUserHandler(user)">
+          <button mat-fab (click)="onEditUserClick(user)">
             <mat-icon>edit</mat-icon>
           </button>
         </div>
