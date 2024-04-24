@@ -23,7 +23,7 @@ export class MatDialogComponent {
   ) {}
 
   public userFormGroup = new FormGroup({
-    id: new FormControl(this.data?.id ?? null),
+    // id: new FormControl(this.data?.id ?? null),
     name: new FormControl(this.data?.name ?? ''),
     username: new FormControl(this.data?.username ?? ''),
     email: new FormControl(this.data?.email ?? ''),
@@ -33,12 +33,11 @@ export class MatDialogComponent {
     }),
   });
 
-  public readonly isEditable: boolean = !!this.data;
 
   onSubmit(): void {
     this.dialogRef.close(this.userFormGroup.value);
   }
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(null);
   }
 }
