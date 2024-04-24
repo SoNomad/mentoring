@@ -7,7 +7,11 @@ export const UsersActions = createActionGroup({
     'Get Users': emptyProps(),
     'Get Users Success': props<{ users: User[] }>(),
     'Get Users Failure': props<{ error: string }>(),
+
     'Add User': props<{ user: User }>(),
+    'Add User Success': props<{ user: User }>(),
+    'Add User Failure': props<{ error: string }>(),
+
     'Edit User': props<{ user: User }>(),
     'Delete User': props<{ id: number }>(),
   },

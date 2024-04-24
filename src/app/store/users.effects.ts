@@ -19,4 +19,13 @@ export class UsersEffects {
       })
     )
   );
+
+  addUser$ = createEffect(() => 
+    this.actions$.pipe(
+      ofType(UsersActions.addUser),
+      mergeMap(() => {
+        return UsersApiService.
+      })
+    )
+  )
 }

@@ -8,6 +8,7 @@ import { provideState, provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { usersReducer } from './store/users.reducers';
+import { UsersEffects } from './store/users.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,7 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideStore(),
     provideState({ name: 'users', reducer: usersReducer }),
-    provideEffects(),
+    provideEffects(UsersEffects),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
   ],
 };

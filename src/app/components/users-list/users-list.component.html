@@ -2,9 +2,9 @@
   <button (click)="openDialog()">Добавить пользователя</button>
 </div>
 <div class="users">
-  @if(!users.length) {
+  @if(isLoading$ | async) {
   <h2>Пользователи отсутствуют</h2>
-  } @for (user of users ; track $index) {
+  } @for (user of users$ | async ; track $index) {
   <app-user-card [user]="user"></app-user-card>
   }
 </div>

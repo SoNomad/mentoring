@@ -6,9 +6,15 @@ import { UsersService } from '../../services/users.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDialogComponent } from '../../ui/matDialog/mat-dialog.component';
 import { MatButtonModule } from '@angular/material/button';
-import { idGenerator } from '../../utils/idGenerator';
-import { Store } from '@ngrx/store';
+import { idGenerator } from '../../utils/id-generator.util';
+import { Store, select } from '@ngrx/store';
 import { UsersActions } from '../../store/users.actions';
+import { Observable } from 'rxjs';
+import {
+  selectError,
+  selectLoading,
+  selectUsers,
+} from '../../store/users.selectors';
 
 @Component({
   selector: 'app-users-list',
@@ -19,22 +25,25 @@ import { UsersActions } from '../../store/users.actions';
   styleUrl: './users-list.component.scss',
 })
 export class UsersListComponent implements OnInit {
-  constructor() {}
   public dialog = inject(MatDialog);
   public store = inject(Store);
-  public users: User[] = [];
+
+  public readonly isLoading$: Observable<boolean> =
+    this.store.select(selectLoading);
+  public readonly users$: Observable<User[]> = this.store.select(selectUsers);
+  public readonly errors$: Observable<string | null> =
+    this.store.select(selectError);
 
   ngOnInit(): void {
     this.store.dispatch(UsersActions.getUsers());
   }
 
   public openDialog(user?: User) {
-    let dialogConfig = {
+    const dialogRef = this.dialog.open(MatDialogComponent, {
       height: '550px',
       width: '450px',
       data: user,
-    };
-    const dialogRef = this.dialog.open(MatDialogComponent, dialogConfig);
+    });
 
     dialogRef.afterClosed().subscribe((data: User) => {
       // if (data && data.id) {
