@@ -1,7 +1,9 @@
-import { Component, EventEmitter, Input, Output, input } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { User } from '../../../types/User';
+import { Store } from '@ngrx/store';
+import { UsersActions } from '../../store/users.actions';
 
 @Component({
   selector: 'app-user-card',
@@ -11,14 +13,16 @@ import { User } from '../../../types/User';
   styleUrl: './user-card.component.scss',
 })
 export class UserCardComponent {
-  @Input() public user!: User;
-  @Output() public deleteUserId: EventEmitter<number> = new EventEmitter();
-  @Output() public editableUser: EventEmitter<User> = new EventEmitter();
+  public store = inject(Store);
+  @Input({ required: true }) public user!: User;
+  @Input({ required: true }) public index!: number;
+  @Output() public editableUser = new EventEmitter<User>();
 
-  public deleteUserHandler(id: number) {
-    this.deleteUserId.emit(id);
+  public onDeleteClick(id: number) {
+    this.store.dispatch(UsersActions.deleteUser({ id }));
+
   }
-  editUserHandler(user: User) {
+  public onEditClick(user: User) {
     this.editableUser.emit(user);
   }
 }

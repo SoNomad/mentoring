@@ -3,8 +3,8 @@
 </div>
 <div class="users">
   @if(isLoading$ | async) {
-  <h2>Пользователи отсутствуют</h2>
-  } @for (user of users$ | async ; track $index) {
-  <app-user-card [user]="user"></app-user-card>
-  }
+  <h2>Загрузка</h2>
+  } @else { @for (user of users$ | async ; track $index) {
+  <app-user-card [user]="user" [index]="$index"  ></app-user-card>
+  } }
 </div>

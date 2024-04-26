@@ -2,7 +2,7 @@
   <div class="card">
     <div class="box">
       <div class="content">
-        <h2>{{ user.id }}</h2>
+        <h2>{{ index + 1 }}</h2>
         <h3>
           {{ user.username }}
         </h3>
@@ -15,11 +15,11 @@
         </p>
 
         <div class="action-btns">
-          <button mat-fab (click)="deleteUserHandler(user.id)">
+          <button mat-fab (click)="onDeleteClick(user.id)">
             <mat-icon>delete</mat-icon>
           </button>
 
-          <button mat-fab (click)="editUserHandler(user)">
+          <button mat-fab (click)="onEditClick(user)">
             <mat-icon>edit</mat-icon>
           </button>
         </div>

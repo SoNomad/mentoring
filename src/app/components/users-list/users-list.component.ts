@@ -3,9 +3,8 @@ import { CommonModule } from '@angular/common';
 import { User } from '../../../types/User';
 import { UserCardComponent } from '../../ui/user-card/user-card.component';
 import { MatDialog } from '@angular/material/dialog';
-import { MatDialogComponent } from '../../ui/matDialog/mat-dialog.component';
+import { CreateEditUserModalComponent } from '../../ui/modal/create-edit-user-modal.component';
 import { MatButtonModule } from '@angular/material/button';
-// import { idGenerator } from '../../utils/id-generator.util';
 import { Store } from '@ngrx/store';
 import { UsersActions } from '../../store/users.actions';
 import { Observable } from 'rxjs';
@@ -13,7 +12,7 @@ import {
   selectError,
   selectLoading,
   selectUsers,
-} from '../../store/users.selectors';
+  } from '../../store/users.selectors';
 
 @Component({
   selector: 'app-users-list',
@@ -36,16 +35,16 @@ export class UsersListComponent implements OnInit {
   }
 
   public openDialog(user?: User) {
-    const dialogRef = this.dialog.open(MatDialogComponent, {
+    const dialogRef = this.dialog.open(CreateEditUserModalComponent, {
       height: '550px',
       width: '450px',
       data: user,
     });
 
     dialogRef.afterClosed().subscribe((data: User) => {
-      // console.log(data)
-      if  (data) {
-        this.store.dispatch(UsersActions.addUser({user: data}));
+      
+      if (data) {
+        this.store.dispatch(UsersActions.addUser({ user: data }));
       } else {
         return;
       }

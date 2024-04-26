@@ -13,17 +13,16 @@ import { User } from '../../../types/User';
   selector: 'app-mat-dialog',
   standalone: true,
   imports: [MatInputModule, FormsModule, ReactiveFormsModule],
-  templateUrl: './mat-dialog.component.html',
-  styleUrl: './mat-dialog.component.scss',
+  templateUrl: './create-edit-user-modal.component.html',
+  styleUrl: './create-edit-user-modal.component.scss',
 })
-export class MatDialogComponent {
+export class CreateEditUserModalComponent {
   constructor(
-    public dialogRef: MatDialogRef<MatDialogComponent>,
+    public dialogRef: MatDialogRef<CreateEditUserModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: User
   ) {}
 
   public userFormGroup = new FormGroup({
-    // id: new FormControl(this.data?.id ?? null),
     name: new FormControl(this.data?.name ?? ''),
     username: new FormControl(this.data?.username ?? ''),
     email: new FormControl(this.data?.email ?? ''),
@@ -34,10 +33,10 @@ export class MatDialogComponent {
   });
 
 
-  onSubmit(): void {
+  public onSubmit(): void {
     this.dialogRef.close(this.userFormGroup.value);
   }
-  onNoClick(): void {
+  public onNoClick(): void {
     this.dialogRef.close(null);
   }
 }
