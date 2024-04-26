@@ -8,6 +8,7 @@ import {
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { User } from '../../../types/User';
+import { uuidgen } from '../../utils/id-generator.util';
 
 @Component({
   selector: 'app-mat-dialog',
@@ -34,7 +35,7 @@ export class CreateEditUserModalComponent {
 
 
   public onSubmit(): void {
-    this.dialogRef.close(this.userFormGroup.value);
+    this.dialogRef.close({ ...this.data, ...this.userFormGroup.value});
   }
   public onNoClick(): void {
     this.dialogRef.close(null);

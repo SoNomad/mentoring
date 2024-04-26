@@ -43,9 +43,11 @@ export class UsersListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((data: User) => {
       
-      if (data) {
-        this.store.dispatch(UsersActions.addUser({ user: data }));
+      //todo
+      if (data.id) {
+        this.store.dispatch(UsersActions.editUser({ userChanges: data }));
       } else {
+        this.store.dispatch(UsersActions.addUser({ user: data }));
         return;
       }
     });

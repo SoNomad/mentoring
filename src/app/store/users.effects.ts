@@ -3,7 +3,6 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { UsersApiService } from '../services/users.api.service';
 import { UsersActions } from './users.actions';
 import { catchError, map, mergeMap, of } from 'rxjs';
-import * as uuid from 'uuid';
 import { uuidgen } from '../utils/id-generator.util';
 
 @Injectable()
@@ -52,8 +51,21 @@ export class UsersEffects {
           )
         );
       })
-
-
     )
   );
+
+  editUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UsersActions.editUser),
+      mergeMap((action) => {
+        return this.UsersApiService.editUser(action.userChanges).pipe(
+          map(() => UsersActions.editUserSuccess({ userChanges: action.userChanges })),
+            catchError((error) =>
+              of(UsersActions.editUserFailure({ error: error.message }))
+            )
+          );
+        }
+      )
+    )
+  )
 }
