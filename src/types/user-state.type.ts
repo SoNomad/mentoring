@@ -1,4 +1,4 @@
-import { User } from './User';
+import { User } from './user.type';
 
 export type UserStateType = {
   isLoading: boolean;

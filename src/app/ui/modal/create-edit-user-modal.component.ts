@@ -1,14 +1,8 @@
-import { Component, Inject } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { Component, Inject, inject } from '@angular/core';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
-import { User } from '../../../types/User';
-import { uuidgen } from '../../utils/id-generator.util';
+import { User } from '../../../types/user.type';
 
 @Component({
   selector: 'app-mat-dialog',
@@ -22,18 +16,17 @@ export class CreateEditUserModalComponent {
     public dialogRef: MatDialogRef<CreateEditUserModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: User
   ) {}
-
-  public userFormGroup = new FormGroup({
-    name: new FormControl(this.data?.name ?? ''),
-    username: new FormControl(this.data?.username ?? ''),
-    email: new FormControl(this.data?.email ?? ''),
-    address: new FormGroup({
-      city: new FormControl(this.data?.address?.city ?? ''),
-      street: new FormControl(this.data?.address?.street ?? ''),
+  
+  private readonly fb = inject(FormBuilder);
+  public readonly userFormGroup = this.fb.group({
+    name: [this.data?.name ?? ''],
+    username: [this.data?.username ?? ''],
+    email: [this.data?.email ?? ''],
+    address: this.fb.group({
+      city: [this.data?.address?.city ?? ''],
+      street: [this.data?.address?.street ?? ''],
     }),
   });
-
-
   public onSubmit(): void {
     this.dialogRef.close({ ...this.data, ...this.userFormGroup.value});
   }

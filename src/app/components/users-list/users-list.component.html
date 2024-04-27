@@ -4,7 +4,9 @@
 <div class="users">
   @if(isLoading$ | async) {
   <h2>Загрузка</h2>
-  } @else { @for (user of users$ | async ; track $index) {
-  <app-user-card [user]="user" [index]="$index"  ></app-user-card>
-  } }
+  } @else { 
+    @for (user of users$ | async; track $index) {
+  <app-user-card [user]="user" [index]="$index" (editableUser)="openDialog($event)"></app-user-card>
+    } 
+  }
 </div>

@@ -1,6 +1,8 @@
-import { createReducer, on } from '@ngrx/store';
-import { UserStateType } from '../../types/UserStateType';
+import { createFeature, createReducer, on } from '@ngrx/store';
+import { UserStateType } from '../../types/user-state.type';
 import { UsersActions } from './users.actions';
+
+export const usersListFeautureKey = 'usersFeauture';
 
 export const initialState: UserStateType = {
   isLoading: false,
@@ -30,3 +32,8 @@ export const usersReducer = createReducer(
   on(UsersActions.editUserSuccess, (state, action) => ({...state, isLoading: false, users: state.users.map(user => user.id === action.userChanges.id ? action.userChanges : user)})),
   on(UsersActions.editUserFailure, (state, action) => ({...state, isLoading: false, errors: action.error}))
 );
+
+export const usersFeauture = createFeature({
+  name: 'usersFeauture',
+  reducer: usersReducer
+})

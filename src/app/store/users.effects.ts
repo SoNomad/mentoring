@@ -16,29 +16,17 @@ export class UsersEffects {
       mergeMap(() => {
         return this.UsersApiService.getUsers().pipe(
           map((users) => UsersActions.getUsersSuccess({ users })),
-          catchError((error) =>
-            of(UsersActions.getUsersFailure({ error: error.message }))
-          )
-        );
-      })
-    )
-  );
+          catchError((error) => of(UsersActions.getUsersFailure({ error: error.message }))));
+      })));
 
   addUsers$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UsersActions.addUser),
       mergeMap((action) => {
         return this.UsersApiService.addUser(action.user).pipe(
-          map((user) =>
-            UsersActions.addUserSuccess({ user: { ...user, id: uuidgen() } })
-          ),
-          catchError((error) =>
-            of(UsersActions.addUserFailure({ error: error.message }))
-          )
-        );
-      })
-    )
-  );
+          map((user) => UsersActions.addUserSuccess({ user: { ...user, id: uuidgen() }})),
+          catchError((error) => of(UsersActions.addUserFailure({ error: error.message }))));
+      })));
 
   deleteUser$ = createEffect(() =>
     this.actions$.pipe(
@@ -46,13 +34,8 @@ export class UsersEffects {
       mergeMap((action) => {
         return this.UsersApiService.deleteUser(action.id).pipe(
           map(() => UsersActions.deleteUserSuccess({ id: action.id })),
-          catchError((error) =>
-            of(UsersActions.deleteUserFailure({ error: error.message }))
-          )
-        );
-      })
-    )
-  );
+          catchError((error) => of(UsersActions.deleteUserFailure({ error: error.message }))));
+      })));
 
   editUser$ = createEffect(() =>
     this.actions$.pipe(
@@ -60,12 +43,6 @@ export class UsersEffects {
       mergeMap((action) => {
         return this.UsersApiService.editUser(action.userChanges).pipe(
           map(() => UsersActions.editUserSuccess({ userChanges: action.userChanges })),
-            catchError((error) =>
-              of(UsersActions.editUserFailure({ error: error.message }))
-            )
-          );
-        }
-      )
-    )
-  )
+          catchError((error) => of(UsersActions.editUserFailure({ error: error.message }))));
+      })));
 }
